@@ -1,6 +1,13 @@
 import streamlit as st
 import pickle
 import pandas as pd
+import pickle
+import requests
+
+url = "https://your-direct-link-to/similarity.pkl"
+response = requests.get(url)
+similarity = pickle.loads(response.content)
+
 def recommend(movie):
     movie_index=movies[movies['title']==movie].index[0]
     distance=similarity[movie_index]

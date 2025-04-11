@@ -1,12 +1,11 @@
 import streamlit as st
-import pickle
 import pandas as pd
-import pickle
-import requests
 
-url = "https://your-direct-link-to/similarity.pkl"
-response = requests.get(url)
-similarity = pickle.loads(response.content)
+import requests
+import pickle
+
+
+
 
 def recommend(movie):
     movie_index=movies[movies['title']==movie].index[0]
@@ -17,9 +16,16 @@ def recommend(movie):
         recommended_movies.append(movies.iloc[i[0]].title)
     return  recommended_movies
 
-movies_dict=pickle.load(open('movies_dict.pkl','rb'))
+# --- Load similarity.pkl from Hugging Face ---
+similarity_url = "https://huggingface.co/raghavu2108/movie-models/resolve/main/similarity.pkl"
+similarity_response = requests.get(similarity_url)
+similarity = pickle.loads(similarity_response.content)
+
+# --- Load movies_dict.pkl from Hugging Face ---
+movies_url = "https://huggingface.co/raghavu2108/movie-models/resolve/main/movies_dict.pkl"
+movies_response = requests.get(movies_url)
+movies_dict = pickle.loads(movies_response.content)
 movies=pd.DataFrame(movies_dict)
-similarity=pickle.load(open('similarity.pkl','rb'))
 
 st.title('Movie Recommendation System')
 #option=st.selectbox(
